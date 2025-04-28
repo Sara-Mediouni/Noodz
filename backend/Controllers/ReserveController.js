@@ -19,58 +19,71 @@ const getAll=async(req,res)=>{
 const createCheckoutSession = async (req, res) => {
   try {
     const user = req.params.id;
-    const { date, time, tables, people, additional } = req.body
-    console.log(req.body)
+    const { date, time, tables, people, additional } = req.body;
+
+    console.log(req.body);
+
+    // Vérification initiale
     if (!tables || !time || !date || !people) {
       return res.status(400).json({ message: "All fields are required." });
     }
-      const reservationDate = new Date(date);
-            const today = new Date();
-            const tomorrow = new Date(today);
-            tomorrow.setDate(today.getDate() + 1);
-    
-            // Validation: La date doit être demain ou plus tard
-            if (reservationDate < tomorrow.setHours(0, 0, 0, 0)) {
-              console.log("Date invalide pour la réservation");
-              return res.status(400).send('Invalid reservation date');
-            }
-    
-            // Vérification: Les tables ne sont pas déjà réservées à ce moment-là
-            const existingReservations = await ReserveModel.find({ tables: { $in: tables }, time, date });
-            if (existingReservations.length > 0) {
-              console.log("Les tables sont déjà réservées pour ce moment.");
-              return res.status(400).send('Tables already reserved');
-            }
-    
-            // Création du début et de la fin de réservation
-            const reservationStart = new Date(`${date}T${time}`);
-            const reservationEnd = new Date(reservationStart.getTime() + 2 * 60 * 60 * 1000); // +2 heures
-    
-            // Vérifier que le même user n'a pas déjà une réservation qui croise ce créneau
-            const userReservations = await ReserveModel.find({ user, date });
-    
-            for (const r of userReservations) {
-              const existingStart = new Date(`${r.date}T${r.time}`);
-              const existingEnd = new Date(existingStart.getTime() + 2 * 60 * 60 * 1000);
-    
-              if (
-                (reservationStart >= existingStart && reservationStart < existingEnd) ||
-                (reservationEnd > existingStart && reservationEnd <= existingEnd) ||
-                (reservationStart <= existingStart && reservationEnd >= existingEnd)
-              ) {
-                console.log("Conflit avec une autre réservation de l'utilisateur.");
-                return res.status(400).send('User already has a reservation at this time');
-              }
-            }
-    
-            // Vérification: somme des sièges
-            const selectedTables = await TableModel.find({ _id: { $in: tables } });
-            const totalSeats = selectedTables.reduce((sum, table) => sum + table.chairs, 0);
-    
-            if (people > totalSeats) {
-              console.log("Not enough chairs.");
-              return res.status(400).send('Not enough seats for the number of people');
-            }
+
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
+    const reservationDate = new Date(date);
+    if (reservationDate < tomorrow.setHours(0, 0, 0, 0)) {
+      return res.status(400).json({ message: "Reservation date must be tomorrow or later." });
+    }
+
+    // Vérifier si les tables sont déjà réservées (hors cancelled)
+    const existingReservations = await ReserveModel.find({ 
+      tables: { $in: tables }, 
+      time, 
+      date,
+      status: { $ne: 'cancelled' }
+    });
+
+    if (existingReservations.length > 0) {
+      return res.status(400).json({ message: "Selected tables are already reserved for this time." });
+    }
+
+    // Création des dates pour les chevauchements
+    const reservationStart = new Date(`${date}T${time}`);
+    const reservationEnd = new Date(reservationStart.getTime() + 2 * 60 * 60 * 1000); // +2 heures
+
+    // Vérifier si l'utilisateur a déjà une réservation à ce moment
+    const userReservations = await ReserveModel.find({ 
+      user, 
+      date,
+      status: { $ne: 'cancelled' }
+    });
+
+    const hasConflict = userReservations.some(r => {
+      const existingStart = new Date(`${r.date}T${r.time}`);
+      const existingEnd = new Date(existingStart.getTime() + 2 * 60 * 60 * 1000);
+
+      return (
+        (reservationStart >= existingStart && reservationStart < existingEnd) ||
+        (reservationEnd > existingStart && reservationEnd <= existingEnd) ||
+        (reservationStart <= existingStart && reservationEnd >= existingEnd)
+      );
+    });
+
+    if (hasConflict) {
+      return res.status(400).json({ message: "You already have a reservation at this time." });
+    }
+
+    // Vérifier la capacité des sièges
+    const selectedTables = await TableModel.find({ _id: { $in: tables } });
+    const totalSeats = selectedTables.reduce((sum, table) => sum + table.chairs, 0);
+
+    if (people > totalSeats) {
+      return res.status(400).json({ message: "Not enough seats for the number of people." });
+    }
+
+    // Création de la session Stripe
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       mode: 'payment',
@@ -83,7 +96,7 @@ const createCheckoutSession = async (req, res) => {
             product_data: {
               name: `Reservation for ${people} people`,
             },
-            unit_amount: 1000, // par exemple 10€ pour la réservation
+            unit_amount: 1000, // 10€ par réservation
           },
           quantity: 1,
         },
@@ -94,16 +107,19 @@ const createCheckoutSession = async (req, res) => {
         time,
         people,
         additional: additional || '',
-        tables: JSON.stringify(tables), // il faut convertir les tableaux en string
+        tables: JSON.stringify(tables),
       }
     });
 
-    res.status(200).json({ url: session.url });
+    return res.status(200).json({ url: session.url });
+
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Server error", error: error.message });
+    return res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
+
 
 
 
@@ -260,17 +276,31 @@ const deleteReservation = async (req, res) => {
         const reservationDate = new Date(`${reservation.date}T${reservation.time}`);
         const currentDate = new Date();
     
-        // Si la réservation est dans moins de 24h, on peut l'annuler
+        // Si la réservation est annulée moins de 24h avant, on prélève des frais
+        let cancellationFee = 0;
         if (reservationDate - currentDate < 24 * 60 * 60 * 1000) {
-          return res.status(400).json({ message: "You can cancel the reservation only if it's more than 24 hours in advance." });
+          cancellationFee = 0.1 * reservation.amount;  // Par exemple 10% du montant total de la réservation
         }
     
         // Libération des tables réservées
         await Promise.all(
           reservation.tables.map(async (tableId) => {
-            await TableModel.findByIdAndUpdate(tableId, { reserved: false, reservedUntil:null });
+            await TableModel.findByIdAndUpdate(tableId, { reserved: false });
           })
         );
+    
+        // Si des frais d'annulation sont appliqués, on les prélève avec Stripe
+        if (cancellationFee > 0) {
+          
+          const paymentIntent = await stripe.paymentIntents.create({
+            amount: cancellationFee * 100,  // Le montant des frais d'annulation en centimes
+            currency: 'usd',
+            customer: reservation.user,  // L'ID du client Stripe (tu devras le récupérer au moment de la création du client)
+          });
+    
+          // Effectuer le paiement
+          await stripe.paymentIntents.confirm(paymentIntent.id);
+        }
     
         // Marquer la réservation comme annulée
         reservation.status = "cancelled";
@@ -283,6 +313,7 @@ const deleteReservation = async (req, res) => {
         res.status(500).json({ message: "Error occurred while cancelling the reservation.", error: error.message });
       }
     };
+    
     const endReservation = async (req, res) => {
       try {
         const { id } = req.params;

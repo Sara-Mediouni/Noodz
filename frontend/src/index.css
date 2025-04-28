@@ -4,6 +4,7 @@
 body {
   background-color: #fbe3bb;
   font-family: 'Baloo 2', cursive;
+  overflow-x:hidden;
 }
 .pres{
   background-image: url('./assets/pexels-pauline-raw-131148428-10488747.jpg');

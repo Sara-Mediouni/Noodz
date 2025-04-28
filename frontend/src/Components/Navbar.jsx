@@ -107,7 +107,7 @@ const Navbar = () => {
             </button>
   
             {isAvOpen && (
-              <div className="absolute right-0 mt-10 w-48 bg-white border border-gray-200 rounded-xl shadow-xl">
+              <div className="absolute right-0  w-48 bg-white border border-gray-200 rounded-xl shadow-xl">
                 <Link
                   to="/profile"
                   className="block px-4 py-2 text-gray-700 hover:bg-orange-100 rounded-t-xl"

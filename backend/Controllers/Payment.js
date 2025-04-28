@@ -1,14 +1,17 @@
-const stripe = require('stripe')('sk_test_51RBMXo4FlSbelSuKp15qkCFl65CTopoEuNZcQ5pIjYp0rJjoHazQIQkaunaimiOvL6enfref6slxKJRmfvx11w1q003oe4GUPp');  // Remplace par ta clé secrète Stripe
+const stripe = require('stripe')(process.env.STRIPE_API_KEY);  // Remplace par ta clé secrète Stripe
 const ReserveModel = require('../Models/Reservation');
 const TableModel = require('../Models/Table');
 
-const endpointSecret = 'whsec_knIPGJPuOJ3sUWMANQZUaMvq7pyCGx18';
 
 const stripeWebhook = async (req, res) => {
   const sig = req.headers['stripe-signature'];
 
+  const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
   let event;
   try {
+    console.log('Received a webhook');
+    console.log('Headers:', req.headers);
+    console.log('Body:', req.rawBody?.toString());
     event = stripe.webhooks.constructEvent(req.rawBody, sig, endpointSecret);
 
     if (event.type === 'checkout.session.completed') {
@@ -89,11 +92,9 @@ const stripeWebhook = async (req, res) => {
       }
     }
 
-    // Pour tout autre type d'événement Stripe
-    res.status(200).send('Event received');
   } catch (err) {
-    console.error('Error while treating webhook:', err);
-    res.status(400).send('Webhook Error');
+    console.error('Webhook signature verification failed.', err);
+    return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 };
 
