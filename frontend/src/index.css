@@ -1,0 +1,49 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&display=swap');
+@import "tailwindcss";
+body {
+  background-color: #fbe3bb;
+  font-family: 'Baloo 2', cursive;
+}
+.pres{
+  background-image: url('./assets/pexels-pauline-raw-131148428-10488747.jpg');
+  height:400px;
+  object-fit:cover;
+}
+span,h3{
+
+  color:oklch(83.7% 0.128 66.29);
+}
+@theme{
+  --color-red-500:oklch(70.4% 0.191 22.216);
+  --color-gray-500:#A0A0A0;
+  --color-red-50:#FFF1EE;
+  --color-orange-100:#fbe3bb;
+  --color-orange-300: oklch(83.7% 0.128 66.29);
+  --color-black-200:#0f0a0e;
+}
+.underline-custom {
+  text-decoration: underline;
+  text-decoration-color: #FF4D4F; /* couleur personnalisée */
+  text-underline-offset: 6px;    /* espace entre le texte et le soulignement */
+  text-decoration-thickness: 2px; /* épaisseur de la ligne */
+}
+
+h1{
+  color: black; 
+  
+}
+.reservation{
+  background-image: url('./assets/bruna-branco-t8hTmte4O_g-unsplash.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  
+}
+
+.menu{
+  background-image: url('./assets/rename2.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}

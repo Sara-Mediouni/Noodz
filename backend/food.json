@@ -1,0 +1,143 @@
+[
+    {
+      "name": "Margherita Pizza",
+      "category": "Main Dish",
+      "description": "Classic Italian pizza with tomato, mozzarella, and basil.",
+      "price": 9.99,
+      "image": "https://source.unsplash.com/featured/?pizza"
+    },
+    {
+      "name": "Grilled Chicken",
+      "category": "Main Dish",
+      "description": "Juicy grilled chicken breast seasoned with herbs.",
+      "price": 11.50,
+      "image": "https://source.unsplash.com/featured/?grilled-chicken"
+    },
+    {
+      "name": "Caesar Salad",
+      "category": "Salad",
+      "description": "Crisp romaine lettuce with Caesar dressing and croutons.",
+      "price": 6.50,
+      "image": "https://source.unsplash.com/featured/?salad"
+    },
+    {
+      "name": "Spaghetti Bolognese",
+      "category": "Main Dish",
+      "description": "Spaghetti served with rich beef and tomato sauce.",
+      "price": 10.75,
+      "image": "https://source.unsplash.com/featured/?spaghetti"
+    },
+    {
+      "name": "French Fries",
+      "category": "Side",
+      "description": "Crispy golden fries served with ketchup.",
+      "price": 3.25,
+      "image": "https://source.unsplash.com/featured/?fries"
+    },
+    {
+      "name": "Tomato Soup",
+      "category": "Starter",
+      "description": "Creamy tomato soup with herbs and croutons.",
+      "price": 4.80,
+      "image": "https://source.unsplash.com/featured/?tomato-soup"
+    },
+    {
+      "name": "Beef Burger",
+      "category": "Main Dish",
+      "description": "Grilled beef patty with lettuce, tomato, and cheese.",
+      "price": 8.99,
+      "image": "https://source.unsplash.com/featured/?burger"
+    },
+    {
+      "name": "Sushi Platter",
+      "category": "Main Dish",
+      "description": "Assorted sushi rolls with fresh fish and veggies.",
+      "price": 13.20,
+      "image": "https://source.unsplash.com/featured/?sushi"
+    },
+    {
+      "name": "Chicken Nuggets",
+      "category": "Side",
+      "description": "Crispy nuggets made with tender chicken breast.",
+      "price": 4.99,
+      "image": "https://source.unsplash.com/featured/?nuggets"
+    },
+    {
+      "name": "Greek Salad",
+      "category": "Salad",
+      "description": "Fresh cucumbers, tomatoes, olives, and feta cheese.",
+      "price": 5.75,
+      "image": "https://source.unsplash.com/featured/?greek-salad"
+    },
+    {
+      "name": "Chocolate Cake",
+      "category": "Dessert",
+      "description": "Rich and moist chocolate cake with ganache frosting.",
+      "price": 4.75,
+      "image": "https://source.unsplash.com/featured/?chocolate-cake"
+    },
+    {
+      "name": "Vanilla Ice Cream",
+      "category": "Dessert",
+      "description": "Creamy vanilla ice cream with a hint of vanilla bean.",
+      "price": 3.50,
+      "image": "https://source.unsplash.com/featured/?ice-cream"
+    },
+    {
+      "name": "Tuna Sandwich",
+      "category": "Main Dish",
+      "description": "Fresh tuna with lettuce, tomato, and mayo on bread.",
+      "price": 6.20,
+      "image": "https://source.unsplash.com/featured/?tuna-sandwich"
+    },
+    {
+      "name": "Pancakes",
+      "category": "Dessert",
+      "description": "Fluffy pancakes served with syrup and butter.",
+      "price": 5.00,
+      "image": "https://source.unsplash.com/featured/?pancakes"
+    },
+    {
+      "name": "Vegetable Stir Fry",
+      "category": "Main Dish",
+      "description": "Mixed vegetables stir-fried with soy sauce and garlic.",
+      "price": 7.60,
+      "image": "https://source.unsplash.com/featured/?stir-fry"
+    },
+    {
+      "name": "Garlic Bread",
+      "category": "Side",
+      "description": "Toasted bread slices with garlic butter.",
+      "price": 2.99,
+      "image": "https://source.unsplash.com/featured/?garlic-bread"
+    },
+    {
+      "name": "Fruit Salad",
+      "category": "Dessert",
+      "description": "Freshly cut seasonal fruits in a light syrup.",
+      "price": 4.20,
+      "image": "https://source.unsplash.com/featured/?fruit-salad"
+    },
+    {
+      "name": "Eggplant Parmesan",
+      "category": "Main Dish",
+      "description": "Baked eggplant slices with marinara and mozzarella.",
+      "price": 9.40,
+      "image": "https://source.unsplash.com/featured/?eggplant"
+    },
+    {
+      "name": "Shrimp Tacos",
+      "category": "Main Dish",
+      "description": "Grilled shrimp with cabbage slaw in soft tortillas.",
+      "price": 10.30,
+      "image": "https://source.unsplash.com/featured/?shrimp-tacos"
+    },
+    {
+      "name": "Lemonade",
+      "category": "Drink",
+      "description": "Refreshing lemon drink served with ice.",
+      "price": 2.50,
+      "image": "https://source.unsplash.com/featured/?lemonade"
+    }
+  ]
+  

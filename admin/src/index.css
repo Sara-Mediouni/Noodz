@@ -1,0 +1,22 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&display=swap');
+@import "tailwindcss";
+body {
+  background-color: #fbe3bb;
+  font-family: 'Baloo 2', cursive;
+}
+
+span,h3,a,nav{
+
+  color:oklch(83.7% 0.128 66.29);
+}
+.update{
+  padding: 10px;
+  color: aliceblue;
+  background-color: rgb(91, 91, 212);
+}
+.delete{
+  color: aliceblue;
+  background-color: red;
+  padding: 10px;
+}
