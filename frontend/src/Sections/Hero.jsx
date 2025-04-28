@@ -14,10 +14,10 @@ const Hero = () => {
           </p>
 
           <div className="md:grid md:grid-cols-2 items-start justify-center gap-4 my-10 font-bold relative h-full">
-            <button className="bg-black relative flex justify-center md:text-lg items-center text-white 
+            {/*<button className="bg-black relative flex justify-center md:text-lg items-center text-white 
             px-auto h-10 py-auto mb-10 rounded-full w-full hover:bg-gray-800 transition">
               Order Now
-            </button>
+            </button>*/}
             <button className="text-black flex justify-center  items-center md:text-lg border break-words
              border-black px-auto  h-10 w-full py-auto rounded-full hover:bg-gray-100 transition">
               Reservation

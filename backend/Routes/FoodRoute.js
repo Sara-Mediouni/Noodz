@@ -25,13 +25,13 @@ const upload = multer({ storage: storage });
 
 router.get("/", getAllFoods);
 router.get('/getallcategories',getAllCategories);
-
+router.get("/:category", filterFood);
 router.get('/recipe', getRecipeOfTheDay);
 router.get('/bestdishes',getBest);
 router.get("/:id", getFood);
 // Ajouter un plat
 router.post("/", upload.single("image"), addFood);
-router.get("/:category", filterFood);
+
 // Supprimer un plat
 router.delete("/:id", deleteFood);
 

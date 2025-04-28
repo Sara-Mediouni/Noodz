@@ -1,11 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios'
 import categoryImages from '../data/CategoryImage';
+import { Pagination } from '../Components/Pagination';
 
 const Menu = () => {
   const [category, setCategory] = useState("")
   const [Food, setFood] = useState([])
   const [Categories, setCategories] = useState()
+  const [currentDishes, setcurrentDishes] = useState([])
+  const DishesPerPage = 6;
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = Math.ceil(Food.length / DishesPerPage); // ou selon le total de tes données
+  const indexOfLastDish = currentPage * DishesPerPage;
+  const indexOfFirstResort = indexOfLastDish - DishesPerPage;
+
+
+
+const handleNextPage = () => {
+ if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+};
+
+const handlePrevPage = () => {
+ if (currentPage > 1) setCurrentPage(currentPage - 1);
+};
+
+const handlePageChange = (page) => {
+ setCurrentPage(page);
+};
+
+
+
  const handleChange=(category)=>{
     setCategory(category);
     console.log(category)
@@ -30,16 +55,24 @@ const Menu = () => {
     })
   }
 
-  useEffect(()=>{
-     getFood(); getCategories();
-     console.log(Categories);
-     
-    
-  },[category])
+  useEffect(() => {
+    const fetchData = async () => {
+      await getFood();
+      await getCategories();
+    };
+  
+    fetchData();
+  }, [category]);
+  
+  useEffect(() => {
+    // Quand Food est mis à jour
+    setcurrentDishes(Food.slice(indexOfFirstResort, indexOfLastDish));
+  }, [Food]);
+  
   return ( 
     <div>
       <div className='menu w-full flex items-center justify-start py-50 px-30'>
-        <h1 className="text-6xl font-bold p-10 !text-white">Our Menu</h1>
+        <h1 className="text-6xl font-bold p-10 !text-white text-start ">Our Menu</h1>
       </div>
 
       <div className="mt-40 mx-10 md:mx-20">
@@ -67,7 +100,7 @@ const Menu = () => {
 
         {/* Menu items */}
         <div className="grid md:grid-cols-3 gap-10 mt-40">
-          {Food.map((item, index) => (
+          {currentDishes?.map((item, index) => (
             <div
               key={index}
               className="relative my-10 bg-orange-200 rounded-2xl p-6 pt-10 pb-24 hover:shadow-xl transition-shadow duration-300"
@@ -94,6 +127,16 @@ const Menu = () => {
           ))}
         </div>
       </div>
+      <div className="flex  justify-center items-center relative h-full py-20  w-full">
+          <Pagination
+         currentPage={currentPage}
+         totalPages={totalPages}
+         handleNextPage={handleNextPage}
+         handlePrevPage={handlePrevPage}
+         handlePageChange={handlePageChange}
+       />
+       
+       </div>
     </div>
   );
 };
