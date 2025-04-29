@@ -25,8 +25,8 @@ const Hero = () => {
           </div>
         </div>
 
-        <div className="h-full w-full flex justify-center transform md:-translate-y-30 md:-translate-x-20 relative">
-          <img src={hero} className="w-200 absolute" />
+        <div className="h-full w-full flex justify-center items-center  md:items-start transform md:-translate-y-30 md:-translate-x-20 relative">
+          <img src={hero} className="md:w-200 min-w-50 absolute" />
         </div>
       </div>
     </div>
