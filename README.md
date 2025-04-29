@@ -45,7 +45,7 @@
 ## 🚀 **Lancer localement**
 
 ```bash
-git clone https://github.com/Sara-Mediouni/foodle.git
+git clone https://github.com/Sara-Mediouni/Noodz.git
 cd noodz
 
 cd backend && npm install
