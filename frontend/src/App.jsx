@@ -35,7 +35,7 @@ function App() {
      <Navbar/>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/reservation" element={<ProtectedRoute><Reservation/></ProtectedRoute>}/>
+          <Route path="/reservation" element={<Reservation/>}/>
           <Route path="/menu" element={<Menu/>}/>
           <Route path="/contact" element={<Contact/>}/>
           <Route path="/profile" element={<ProtectedRoute><Profile/></ProtectedRoute>}/>

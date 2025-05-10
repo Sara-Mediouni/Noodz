@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { openLoginPopup } from "./redux/uiSlice";
+
 
 const ProtectedRoute = ({ children }) => {
   const token = useSelector((state) => state.auth.token); // adapte selon ton reducer

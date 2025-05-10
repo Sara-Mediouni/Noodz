@@ -35,13 +35,16 @@ h1{
   
 }
 .reservation{
-  background-image: url('./assets/bruna-branco-t8hTmte4O_g-unsplash.jpg');
+  background-image: url('./assets/chad-montano--GFCYhoRe48-unsplash.jpg');
   background-size: cover;
   background-repeat: no-repeat;
+  height: 500px;
   background-position: center;
   
 }
-
+.reservation-input{
+  @apply border-[#6a7282] p-2 bg-orange-100 border-2 rounded-2xl w-full shadow-sm focus:outline-none;
+}
 .menu{
   background-image: url('./assets/rename2.jpg');
   background-size: cover;
